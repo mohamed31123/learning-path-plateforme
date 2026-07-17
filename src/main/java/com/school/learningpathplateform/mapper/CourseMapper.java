@@ -2,7 +2,8 @@ package com.school.learningpathplateform.mapper;
 
 import com.school.learningpathplateform.dto.CourseDto;
 import com.school.learningpathplateform.entities.Course;
-import org.springframework.web.bind.annotation.Mapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CourseMapper {
