@@ -21,10 +21,6 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                bat 'docker build -t learning-path-app .'
-            }
-        }
+
     }
 }
