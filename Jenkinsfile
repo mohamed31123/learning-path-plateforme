@@ -27,8 +27,35 @@ pipeline {
                 echo 'Generation des JAR'
                 bat 'mvn clean package -DskipTests'
             }
+
+        }
+        stage('Archive'){
+             steps{
+                  archiveArtifacts artifacts: 'target/*.jar'
+             }
+
         }
 
 
     }
+
+
+
+
+
+    post {
+            always {
+                echo "Le pipeline est terminé !"
+                // Permet de sauvegarder vos rapports de tests Spring Boot / JUnit
+                junit '**/target/surefire-reports/*.xml'
+            }
+            success {
+                echo "Super ! Tout s'est déroulé avec succès. La terre est sauve."
+            }
+            failure {
+                echo "Aïe... Le pipeline a échoué. Vérifiez les logs ci-dessus !"
+                // Ici, vous pourriez ajouter une commande pour envoyer un mail
+            }
+        }
 }
+
