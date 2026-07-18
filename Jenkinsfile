@@ -1,17 +1,18 @@
 pipeline {
     agent any
 
-    stages {
-     environment {
-            APP_NAME = 'Learning Path Platform'
-            JAVA_HOME = 'C:\Program Files\Eclipse Adoptium\jdk-21.0.11.10-hotspot'
-            MAVEN_HOME = 'C:\Users\lenovo\Desktop\apache-maven-3.9.12'
-        }
+    environment {
+        APP_NAME = 'Learning Path Platform'
+        JAVA_HOME = 'C:/Program Files/Eclipse Adoptium/jdk-21.0.11.10-hotspot'
+        MAVEN_HOME = 'C:/Users/lenovo/Desktop/apache-maven-3.9.12'
+    }
 
-        stage('Environment check'){
-            steps{
+    stages {
+
+        stage('Environment Check') {
+            steps {
                 bat 'java -version'
-                bat 'maven -version'
+                bat 'mvn -version'
                 bat 'git --version'
             }
         }
@@ -25,46 +26,44 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo("Execution des tests")
+                echo 'Execution des tests'
                 bat 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
-                echo 'Generation des JAR'
+                echo 'Generation du JAR'
                 bat 'mvn clean package -DskipTests'
             }
-
         }
-        stage('Archive'){
-             steps{
-                  archiveArtifacts artifacts: 'target/*.jar'
-             }
 
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar'
+            }
         }
+
         stage('Verify') {
             steps {
                 bat 'mvn verify'
             }
         }
-
-
     }
 
     post {
-            always {
-                echo "Le pipeline est terminé !"
-                // Permet de sauvegarder vos rapports de tests Spring Boot / JUnit
-                junit '**/target/surefire-reports/*.xml'
-            }
-            success {
-                echo "Super ! Tout s'est déroulé avec succès. La terre est sauve."
-            }
-            failure {
-                echo "Aïe... Le pipeline a échoué. Vérifiez les logs ci-dessus !"
-                // Ici, vous pourriez ajouter une commande pour envoyer un mail
-            }
-        }
-}
 
+        always {
+            echo 'Le pipeline est termine !'
+            junit '**/target/surefire-reports/*.xml'
+        }
+
+        success {
+            echo 'Pipeline execute avec succes'
+        }
+
+        failure {
+            echo 'Pipeline echoue. Consulte les logs.'
+        }
+    }
+}
