@@ -8,6 +8,14 @@ pipeline {
             MAVEN_HOME = 'C:\Users\lenovo\Desktop\apache-maven-3.9.12'
         }
 
+        stage('Environment check'){
+            steps{
+                bat 'java -version'
+                bat 'maven -version'
+                bat 'git --version'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Compilation du projet'
@@ -38,10 +46,6 @@ pipeline {
 
 
     }
-
-
-
-
 
     post {
             always {
